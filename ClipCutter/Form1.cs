@@ -1,0 +1,115 @@
+using AxWMPLib;
+using FFMpegCore;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using WMPLib;
+using ClipCutter.models;
+using SQLite;
+
+
+namespace ClipCutter
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            mediaPlayer.uiMode = "none";
+            mediaPlayer.settings.autoStart = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog fileDialog = new OpenFileDialog { Filter = "MP4 Files (*.mp4)|*.mp4" };
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string videoPath = fileDialog.FileName;
+                string fileOnlyName = Path.GetFileName(videoPath);
+                mediaPlayer.URL = videoPath;
+            }
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (button2.Text == "Play")
+            {
+                mediaPlayer.Ctlcontrols.play();
+                button2.Text = "Pause";
+            }
+            else if (button2.Text == "Pause")
+            {
+                mediaPlayer.Ctlcontrols.pause();
+                button2.Text = "Play";
+            }
+        }
+
+        private void mediaPlayer_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if (e.newState == 3)
+            {
+                double durationInSeconds = mediaPlayer.currentMedia.duration;
+                TimeSpan time = TimeSpan.FromSeconds(durationInSeconds);
+                string formattedTime = time.ToString(@"mm\:ss");
+
+                // Example: display it in a label
+                maxLength.Text = formattedTime;
+                trackBarTimeline.Maximum = (int)durationInSeconds;
+            }
+        }
+
+        private void trackBarTimeline_Scroll(object sender, EventArgs e)
+        {
+            mediaPlayer.Ctlcontrols.currentPosition = trackBarTimeline.Value;
+        }
+
+
+        private void playbackTimer_Tick(object sender, EventArgs e)
+        {
+            // elapsed time label
+            double currentPos = mediaPlayer.Ctlcontrols.currentPosition;
+            TimeSpan time = TimeSpan.FromSeconds(currentPos);
+            string formattedTime = time.ToString(@"mm\:ss");
+            elapsedLength.Text = formattedTime;
+
+            trackBarTimeline.Value = (int)mediaPlayer.Ctlcontrols.currentPosition;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SQLiteConnection db = new("./clipcutter.db");
+            var inputPath = mediaPlayer.URL;
+            var getPathFromDb = db.Find<models.Config>(1).OutputPath;
+            string outputPath = $"{getPathFromDb}\\{filenameInput.Text}.mp4";
+            int cutOffSeconds = int.Parse(durationInput.Text);
+
+            FFMpegArguments
+                .FromFileInput(inputPath, verifyExists: true, options => options.Seek(TimeSpan.FromSeconds(cutOffSeconds)))
+                .OutputToFile(outputPath, overwrite: true, options => options.CopyChannel())
+                .ProcessSynchronously();
+
+            if (MessageBox.Show("Your clip has been successfully saved. Do you want to open the clips directory?", "This", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Process.Start("explorer.exe", getPathFromDb);
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void configButton_Click(object sender, EventArgs e)
+        {
+            Form2 f2 = new Form2();
+            f2.Show();
+        }
+    }
+
+
+}
+
