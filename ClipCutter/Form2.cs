@@ -7,7 +7,7 @@ namespace ClipCutter
     {
         public Form2()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void folderDialogButton_Click(object sender, EventArgs e)
@@ -40,6 +40,7 @@ namespace ClipCutter
                     MessageBox.Show("Output path set successfully!");
                 }
             }
+            this.Hide();
         }
     }
 }

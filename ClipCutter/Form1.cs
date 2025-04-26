@@ -83,7 +83,16 @@ namespace ClipCutter
         {
             SQLiteConnection db = new("./clipcutter.db");
             var inputPath = mediaPlayer.URL;
-            var getPathFromDb = db.Find<models.Config>(1).OutputPath;
+
+            var config = db.Find<Config>(1);
+            if (config == null)
+            {
+                MessageBox.Show("No output path found, make sure to configure one via the config tab!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            var getPathFromDb = config.OutputPath;
+
+
             string outputPath = $"{getPathFromDb}\\{filenameInput.Text}.mp4";
             int cutOffSeconds = int.Parse(durationInput.Text);
 
