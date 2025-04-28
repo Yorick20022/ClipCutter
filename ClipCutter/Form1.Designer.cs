@@ -39,13 +39,17 @@
             maxLength = new Label();
             label3 = new Label();
             button3 = new Button();
-            durationInput = new TextBox();
-            label1 = new Label();
-            label2 = new Label();
             filenameInput = new TextBox();
             configButton = new Button();
+            cutOffSecondsStart = new TrackBar();
+            cutOffSecondsEnd = new TrackBar();
+            cutOffSecondsStartLabel = new Label();
+            cutOffSecondsEndLabel = new Label();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTimeline).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cutOffSecondsStart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cutOffSecondsEnd).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -88,7 +92,6 @@
             trackBarTimeline.TabIndex = 5;
             trackBarTimeline.TickStyle = TickStyle.None;
             trackBarTimeline.Scroll += trackBarTimeline_Scroll;
-
             // 
             // playbackTimer
             // 
@@ -125,46 +128,21 @@
             // 
             // button3
             // 
-            button3.Location = new Point(55, 450);
+            button3.Location = new Point(17, 512);
             button3.Name = "button3";
-            button3.Size = new Size(68, 42);
+            button3.Size = new Size(500, 42);
             button3.TabIndex = 9;
             button3.Text = "Export";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
-            // durationInput
-            // 
-            durationInput.Location = new Point(55, 378);
-            durationInput.Name = "durationInput";
-            durationInput.Size = new Size(424, 23);
-            durationInput.TabIndex = 11;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(55, 360);
-            label1.Name = "label1";
-            label1.Size = new Size(98, 15);
-            label1.TabIndex = 12;
-            label1.Text = "Trim off seconds:";
-            label1.Click += label1_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(55, 404);
-            label2.Name = "label2";
-            label2.Size = new Size(61, 15);
-            label2.TabIndex = 13;
-            label2.Text = "File name:";
-            // 
             // filenameInput
             // 
-            filenameInput.Location = new Point(55, 421);
+            filenameInput.Location = new Point(55, 464);
             filenameInput.Name = "filenameInput";
-            filenameInput.Size = new Size(424, 23);
+            filenameInput.Size = new Size(417, 23);
             filenameInput.TabIndex = 14;
+            filenameInput.TextChanged += filenameInput_TextChanged;
             // 
             // configButton
             // 
@@ -176,16 +154,68 @@
             configButton.UseVisualStyleBackColor = true;
             configButton.Click += configButton_Click;
             // 
+            // cutOffSecondsStart
+            // 
+            cutOffSecondsStart.Location = new Point(55, 362);
+            cutOffSecondsStart.Maximum = 60;
+            cutOffSecondsStart.Name = "cutOffSecondsStart";
+            cutOffSecondsStart.RightToLeft = RightToLeft.No;
+            cutOffSecondsStart.Size = new Size(386, 45);
+            cutOffSecondsStart.TabIndex = 18;
+            cutOffSecondsStart.TickStyle = TickStyle.None;
+            cutOffSecondsStart.Scroll += cutOffSecondsStart_Scroll;
+            // 
+            // cutOffSecondsEnd
+            // 
+            cutOffSecondsEnd.Location = new Point(55, 413);
+            cutOffSecondsEnd.Maximum = 60;
+            cutOffSecondsEnd.Name = "cutOffSecondsEnd";
+            cutOffSecondsEnd.RightToLeft = RightToLeft.Yes;
+            cutOffSecondsEnd.RightToLeftLayout = true;
+            cutOffSecondsEnd.Size = new Size(377, 45);
+            cutOffSecondsEnd.TabIndex = 19;
+            cutOffSecondsEnd.TickStyle = TickStyle.None;
+            cutOffSecondsEnd.Scroll += cutOffSecondsEnd_Scroll;
+            // 
+            // cutOffSecondsStartLabel
+            // 
+            cutOffSecondsStartLabel.AutoSize = true;
+            cutOffSecondsStartLabel.Location = new Point(438, 362);
+            cutOffSecondsStartLabel.Name = "cutOffSecondsStartLabel";
+            cutOffSecondsStartLabel.Size = new Size(34, 15);
+            cutOffSecondsStartLabel.TabIndex = 20;
+            cutOffSecondsStartLabel.Text = "00:00";
+            // 
+            // cutOffSecondsEndLabel
+            // 
+            cutOffSecondsEndLabel.AutoSize = true;
+            cutOffSecondsEndLabel.Location = new Point(438, 413);
+            cutOffSecondsEndLabel.Name = "cutOffSecondsEndLabel";
+            cutOffSecondsEndLabel.Size = new Size(34, 15);
+            cutOffSecondsEndLabel.TabIndex = 21;
+            cutOffSecondsEndLabel.Text = "00:00";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(55, 443);
+            label1.Name = "label1";
+            label1.Size = new Size(58, 15);
+            label1.TabIndex = 22;
+            label1.Text = "Filename:";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(534, 509);
+            ClientSize = new Size(534, 575);
+            Controls.Add(label1);
+            Controls.Add(cutOffSecondsEndLabel);
+            Controls.Add(cutOffSecondsStartLabel);
+            Controls.Add(cutOffSecondsEnd);
+            Controls.Add(cutOffSecondsStart);
             Controls.Add(configButton);
             Controls.Add(filenameInput);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(durationInput);
             Controls.Add(button3);
             Controls.Add(label3);
             Controls.Add(maxLength);
@@ -200,6 +230,8 @@
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTimeline).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cutOffSecondsStart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cutOffSecondsEnd).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -214,10 +246,12 @@
         private Label maxLength;
         private Label label3;
         private Button button3;
-        private TextBox durationInput;
-        private Label label1;
-        private Label label2;
         private TextBox filenameInput;
         private Button configButton;
+        private TrackBar cutOffSecondsStart;
+        private TrackBar cutOffSecondsEnd;
+        private Label cutOffSecondsStartLabel;
+        private Label cutOffSecondsEndLabel;
+        private Label label1;
     }
 }

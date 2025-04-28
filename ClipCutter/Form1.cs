@@ -79,6 +79,23 @@ namespace ClipCutter
             trackBarTimeline.Value = (int)mediaPlayer.Ctlcontrols.currentPosition;
         }
 
+        private void cutOffSecondsStart_Scroll(object sender, EventArgs e)
+        {
+            int totalSeconds = cutOffSecondsStart.Value;
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+            cutOffSecondsStartLabel.Text = $"{minutes:D2}:{seconds:D2}";
+        }
+
+
+        private void cutOffSecondsEnd_Scroll(object sender, EventArgs e)
+        {
+            int totalSeconds = cutOffSecondsEnd.Value;
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+            cutOffSecondsEndLabel.Text = $"{minutes:D2}:{seconds:D2}";
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             SQLiteConnection db = new("./clipcutter.db");
@@ -94,11 +111,19 @@ namespace ClipCutter
 
 
             string outputPath = $"{getPathFromDb}\\{filenameInput.Text}.mp4";
-            int cutOffSeconds = int.Parse(durationInput.Text);
+
+            int startSeconds = cutOffSecondsStart.Value;
+            int endSeconds = cutOffSecondsEnd.Value;
+
+            var mediaInfo = FFProbe.Analyse(inputPath);
+            var totalDuration = mediaInfo.Duration;
+            var trimmedDuration = totalDuration - TimeSpan.FromSeconds(startSeconds + endSeconds);
 
             FFMpegArguments
-                .FromFileInput(inputPath, verifyExists: true, options => options.Seek(TimeSpan.FromSeconds(cutOffSeconds)))
-                .OutputToFile(outputPath, overwrite: true, options => options.CopyChannel())
+                .FromFileInput(inputPath, verifyExists: true, options => options.Seek(TimeSpan.FromSeconds(startSeconds)))
+                .OutputToFile(outputPath, overwrite: true, options => options
+                    .WithDuration(trimmedDuration)
+                    .CopyChannel())
                 .ProcessSynchronously();
 
             if (MessageBox.Show("Your clip has been successfully saved. Do you want to open the clips directory?", "This", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -116,6 +141,11 @@ namespace ClipCutter
         {
             Form2 f2 = new Form2();
             f2.Show();
+        }
+
+        private void filenameInput_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
