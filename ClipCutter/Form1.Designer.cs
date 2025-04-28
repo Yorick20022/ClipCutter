@@ -142,7 +142,6 @@
             filenameInput.Name = "filenameInput";
             filenameInput.Size = new Size(417, 23);
             filenameInput.TabIndex = 14;
-            filenameInput.TextChanged += filenameInput_TextChanged;
             // 
             // configButton
             // 

@@ -109,7 +109,6 @@ namespace ClipCutter
             }
             var getPathFromDb = config.OutputPath;
 
-
             string outputPath = $"{getPathFromDb}\\{filenameInput.Text}.mp4";
 
             int startSeconds = cutOffSecondsStart.Value;
@@ -131,21 +130,10 @@ namespace ClipCutter
                 Process.Start("explorer.exe", getPathFromDb);
             }
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void configButton_Click(object sender, EventArgs e)
         {
             Form2 f2 = new Form2();
             f2.Show();
-        }
-
-        private void filenameInput_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 
