@@ -109,7 +109,9 @@ namespace ClipCutter
             }
             var getPathFromDb = config.OutputPath;
 
-            string outputPath = $"{getPathFromDb}\\{filenameInput.Text}.mp4";
+            string videoFileName = Path.GetFileNameWithoutExtension(mediaPlayer.URL);
+
+            string outputPath = $"{getPathFromDb}\\{videoFileName}-cropped.mp4";
 
             int startSeconds = cutOffSecondsStart.Value;
             int endSeconds = cutOffSecondsEnd.Value;

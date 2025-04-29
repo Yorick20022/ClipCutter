@@ -39,13 +39,11 @@
             maxLength = new Label();
             label3 = new Label();
             button3 = new Button();
-            filenameInput = new TextBox();
             configButton = new Button();
             cutOffSecondsStart = new TrackBar();
             cutOffSecondsEnd = new TrackBar();
             cutOffSecondsStartLabel = new Label();
             cutOffSecondsEndLabel = new Label();
-            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTimeline).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cutOffSecondsStart).BeginInit();
@@ -128,20 +126,13 @@
             // 
             // button3
             // 
-            button3.Location = new Point(17, 512);
+            button3.Location = new Point(17, 464);
             button3.Name = "button3";
             button3.Size = new Size(500, 42);
             button3.TabIndex = 9;
             button3.Text = "Export";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
-            // 
-            // filenameInput
-            // 
-            filenameInput.Location = new Point(55, 464);
-            filenameInput.Name = "filenameInput";
-            filenameInput.Size = new Size(417, 23);
-            filenameInput.TabIndex = 14;
             // 
             // configButton
             // 
@@ -194,27 +185,16 @@
             cutOffSecondsEndLabel.TabIndex = 21;
             cutOffSecondsEndLabel.Text = "00:00";
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(55, 443);
-            label1.Name = "label1";
-            label1.Size = new Size(58, 15);
-            label1.TabIndex = 22;
-            label1.Text = "Filename:";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(534, 575);
-            Controls.Add(label1);
+            ClientSize = new Size(534, 518);
             Controls.Add(cutOffSecondsEndLabel);
             Controls.Add(cutOffSecondsStartLabel);
             Controls.Add(cutOffSecondsEnd);
             Controls.Add(cutOffSecondsStart);
             Controls.Add(configButton);
-            Controls.Add(filenameInput);
             Controls.Add(button3);
             Controls.Add(label3);
             Controls.Add(maxLength);
@@ -245,12 +225,10 @@
         private Label maxLength;
         private Label label3;
         private Button button3;
-        private TextBox filenameInput;
         private Button configButton;
         private TrackBar cutOffSecondsStart;
         private TrackBar cutOffSecondsEnd;
         private Label cutOffSecondsStartLabel;
         private Label cutOffSecondsEndLabel;
-        private Label label1;
     }
 }
